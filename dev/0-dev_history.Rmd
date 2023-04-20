@@ -50,7 +50,7 @@ usethis::use_code_of_conduct("contact@fake.com")
 # NEWS
 usethis::use_news_md()
 usethis::use_version(which="minor")
-
+usethis::use_package_doc()
 usethis::use_data_raw("dat")
 ```
 
