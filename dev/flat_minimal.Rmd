@@ -18,27 +18,46 @@ library(testthat)
 pkgload::load_all(export_all = FALSE)
 ```
 
-# My function
+# function-check_primary_color_is_ok
 
-```{r function-my_fun}
-#' my_fun Title
+```{r function-check_primary_color_is_ok}
+#' Check the values of primary fur color
 #'
-#' @return 1
+#' @param string Character. A vector with the primary fur color.
+#'
+#' @return Boolean. TRUE if all colors are correct.
 #' @export
 #'
 #' @examples
-my_fun <- function() {
-  1
+check_primary_color_is_ok <- function(string) {
+  
+  all_colors_OK <- all(
+    string %in% c("Gray", "Cinnamon", "Black", NA)
+  )
+  
+  if (isFALSE(all_colors_OK)) {
+    stop('The vector of primary fur color contains not allowed colors. Colors should be among values "Gray", "Cinnamon", "Black", or missing values')
+  }
+  
+  return(all_colors_OK)
 }
 ```
-
-```{r examples-my_fun}
-my_fun()
+  
+```{r example-check_primary_color_is_ok}
+check_primary_color_is_ok(string = c("Black", "Cinnamon", NA))
+check_primary_color_is_ok(string = c("Gray", "Cinnamon", "Gray"))
 ```
-
-```{r tests-my_fun}
-test_that("my_fun works", {
-
+  
+```{r tests-check_primary_color_is_ok}
+test_that("check_primary_color_is_ok works", {
+  
+  expect_true(check_primary_color_is_ok(string = c("Black", "Cinnamon", NA))) 
+  
+  expect_true(check_primary_color_is_ok(string = c("Gray", "Cinnamon", "Gray")))
+  
+  expect_error(check_primary_color_is_ok(string = c("Gray", "Cinnamon", "Blue")),
+               regexp = "The vector of primary fur color contains not allowed colors")
+  
 })
 ```
 
@@ -48,3 +67,4 @@ test_that("my_fun works", {
 # Execute in the console directly
 fusen::inflate(flat_file = "dev/flat_minimal.Rmd", vignette_name = "Minimal")
 ```
+
